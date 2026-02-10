@@ -4,6 +4,7 @@ on: [ push ]
 jobs:
   env-vars-and-context:
     runs-on: ubuntu-latest
+    # if: $GITHUB_REF == 'refs/heads/main' ==> only accessible inside the runner
     if: github.ref == 'refs/heads/main'
     steps:
     - name: Log ENV VAR
