@@ -1,9 +1,12 @@
 name: Environment variables
 on: [ push ]
-
+env:
+  WF_LEVEL_ENV: All Jobs in the workflow can access this env
 jobs:
   env-vars-and-context:
     runs-on: ubuntu-latest
+    env:
+      JOB_LEVEL_ENV: All steps inside env-vars-and-context jobs can access
     # if: $GITHUB_REF == 'refs/heads/main' ==> only accessible inside the runner
     if: github.ref == 'refs/heads/main'
     steps:
@@ -11,3 +14,12 @@ jobs:
       run: echo $GITHUB_REF
     - name: Log Context
       run: echo '${{ github.ref }}'
+    - name: Log Custom ENV Vars
+      env:
+        STEP_LEVEL_ENV: Available only on this step
+        WF_LEVEL_ENV: Overriden in step
+      run: |
+        echo '${{ env.STEP_LEVEL_ENV }}'
+        echo $STEP_LEVEL_ENV
+        echo $WF_LEVEL_ENV
+        echo $JOB_LEVEL_ENV
