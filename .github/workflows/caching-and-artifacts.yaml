@@ -10,7 +10,10 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.npm
-        key: "npm-cache"
+        key: ${{ runner.os }}-npm-cache-${{ hashFiles('**/package-lock.json') }} # linux-npm-cache-754665464
+        restore-keys: | #restore-keys are useful to find old caches if the above cache is not found
+          ${{ runner.os }}-npm-cache-
+          ${{ runner.os }}-
     - name: Display Cache Output
       run: echo '${{ toJSON(steps.cache-dependencies.outputs)}}'
     - name: install dependencies
